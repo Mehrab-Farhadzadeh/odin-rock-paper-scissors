@@ -1,25 +1,27 @@
 function computerPlay() {
-  let options = ["Rock", "Paper", "Scissors"];
+  let options = ["rock", "paper", "scissors"];
   let randomChoice = Math.floor(Math.random() * 3);
   return options[randomChoice];
 }
 
 function whoWins(playerSelection, computerSelection) {
+  playerSelection = playerSelection.toLowerCase();
+
   if (playerSelection === computerSelection) {
     return `Tie, Both are "${playerSelection}"`;
   }
-  if (playerSelection === "Rock") {
-    return computerSelection === "Paper"
+  if (playerSelection === "rock") {
+    return computerSelection === "paper"
       ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
       : `You Win! "${playerSelection}" beats "${computerSelection}".`;
   }
-  if (playerSelection === "Paper") {
-    return computerSelection === "Scissors"
+  if (playerSelection === "paper") {
+    return computerSelection === "scissors"
       ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
       : `You Win! "${playerSelection}" beats "${computerSelection}".`;
   }
-  if (playerSelection === "Scissors") {
-    return computerSelection === "Rock"
+  if (playerSelection === "scissors") {
+    return computerSelection === "rock"
       ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
       : `You Win! "${playerSelection}" beats "${computerSelection}".`;
   }
