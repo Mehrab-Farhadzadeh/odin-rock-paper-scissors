@@ -26,3 +26,11 @@ function whoWins(playerSelection, computerSelection) {
       : `You Win! "${playerSelection}" beats "${computerSelection}".`;
   }
 }
+
+function game() {
+  for (let i = 0; i < 5; i++) {
+    const playerSelection = window.prompt("Rock, Paper or Scissors?");
+    const computerSelection = computerPlay();
+    console.log(playRound(playerSelection, computerSelection));
+  }
+}
