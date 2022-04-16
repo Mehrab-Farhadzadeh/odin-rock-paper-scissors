@@ -27,10 +27,38 @@ function whoWins(playerSelection, computerSelection) {
   }
 }
 
-function game() {
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = window.prompt("Rock, Paper or Scissors?");
-    const computerSelection = computerPlay();
-    console.log(playRound(playerSelection, computerSelection));
-  }
+function playRound() {
+  const playerSelection = window.prompt("Rock, Paper or Scissors?");
+  const computerSelection = computerPlay();
+  return whoWins(playerSelection, computerSelection);
 }
+
+function generateFinalReport(playerWins, computerWins) {
+  let finalReport = `Your score: ${playerWins}\nComputer score: ${computerWins}\n`;
+
+  if (playerWins === computerWins) {
+    finalReport += "Tie!";
+  } else {
+    finalReport +=
+      playerWins > computerWins ? "You win the game!" : "You lose the game!";
+  }
+
+  return finalReport;
+}
+
+function game() {
+  let playerWins = 0;
+  let computerWins = 0;
+  for (let i = 0; i < 5; i++) {
+    const roundReport = playRound();
+    if (roundReport.search("Win") !== -1) {
+      playerWins++;
+    } else if (roundReport.search("Lose") !== -1) {
+      computerWins++;
+    }
+    console.log(roundReport);
+  }
+  console.log(generateFinalReport(playerWins, computerWins));
+}
+
+game();
