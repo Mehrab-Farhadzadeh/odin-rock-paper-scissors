@@ -22,3 +22,14 @@ button {
   width: 150px;
   height: 100px;
 }
+
+.results {
+  color: #d1ffe7;
+  border: 2px solid #adeccb;
+  border-radius: 12px;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+  margin: 3em auto;
+  padding: 12px;
+  width: 550px;
+}
