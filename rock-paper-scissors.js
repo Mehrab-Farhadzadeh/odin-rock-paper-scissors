@@ -5,10 +5,8 @@ function computerPlay() {
 }
 
 function whoWins(playerSelection, computerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-
   if (playerSelection === computerSelection) {
-    return `Tie, Both are "${playerSelection}"`;
+    return `Tie, Both are "${playerSelection}".`;
   }
   if (playerSelection === "rock") {
     return computerSelection === "paper"
@@ -27,38 +25,113 @@ function whoWins(playerSelection, computerSelection) {
   }
 }
 
-function playRound() {
-  const playerSelection = window.prompt("Rock, Paper or Scissors?");
-  const computerSelection = computerPlay();
-  return whoWins(playerSelection, computerSelection);
-}
-
 function generateFinalReport(playerWins, computerWins) {
-  let finalReport = `Your score: ${playerWins}\nComputer score: ${computerWins}\n`;
+  let finalReport = "";
 
   if (playerWins === computerWins) {
     finalReport += "Tie!";
   } else {
-    finalReport +=
-      playerWins > computerWins ? "You win the game!" : "You lose the game!";
+    finalReport += playerWins > computerWins ? "You win!" : "You lose!";
   }
-
   return finalReport;
 }
 
-function game() {
-  let playerWins = 0;
-  let computerWins = 0;
-  for (let i = 0; i < 5; i++) {
-    const roundReport = playRound();
-    if (roundReport.search("Win") !== -1) {
-      playerWins++;
-    } else if (roundReport.search("Lose") !== -1) {
-      computerWins++;
-    }
-    console.log(roundReport);
+function resetTheGame() {
+  const finalReportNode = document.querySelector("p.result");
+  const resultsNode = document.querySelector(".results");
+  let gameResult;
+  if (playerWins > computerWins) {
+    gameResult = "winner";
+  } else {
+    gameResult = "loser";
   }
-  console.log(generateFinalReport(playerWins, computerWins));
+  playerWins = 0;
+  computerWins = 0;
+  resultsNode.classList.remove(gameResult);
+  finalReportNode.classList.remove(gameResult);
+  addRoundReportToDOM("Choose your weapon!");
+  addEventListenerToGameButtons();
 }
 
-game();
+let playerWins = 0;
+let computerWins = 0;
+const TOTALROUNDS = 5;
+
+function addScoresToDOM() {
+  const playerScoreNode = document.querySelector(".player .score");
+  const computerScoreNode = document.querySelector(".computer .score");
+  playerScoreNode.textContent =
+    "⭐".repeat(playerWins) + "⚝".repeat(TOTALROUNDS - playerWins);
+  computerScoreNode.textContent =
+    "⭐".repeat(computerWins) + "⚝".repeat(TOTALROUNDS - computerWins);
+}
+function addRoundReportToDOM(roundReport, resultEmoji = "") {
+  const roundReportNode = document.querySelector("p.result");
+  const resultsHeaderNode = document.querySelector(".results h2");
+  roundReportNode.textContent = `${roundReport}`;
+  resultsHeaderNode.textContent = `${resultEmoji} Result ${resultEmoji}`;
+  addScoresToDOM();
+}
+
+function addFinalReportToDOM(finalReport) {
+  const finalReportNode = document.querySelector("p.result");
+  const resultsNode = document.querySelector(".results");
+  finalReportNode.textContent = `${finalReport}`;
+  let gameResult;
+  if (playerWins > computerWins) {
+    gameResult = "winner";
+  } else {
+    gameResult = "loser";
+  }
+  resultsNode.classList.add(gameResult);
+  finalReportNode.classList.add(gameResult);
+  resultsNode.appendChild(finalReportNode);
+}
+
+function game(roundReport) {
+  console.log(roundReport);
+  let resultEmoji = "🤝";
+  if (roundReport.search("Win") !== -1) {
+    playerWins++;
+    resultEmoji = "✅";
+  } else if (roundReport.search("Lose") !== -1) {
+    computerWins++;
+    resultEmoji = "❌";
+  }
+  addRoundReportToDOM(roundReport, resultEmoji);
+  console.log(roundReport);
+
+  if (playerWins >= 5 || computerWins >= 5) {
+    addFinalReportToDOM(generateFinalReport(playerWins, computerWins));
+    console.log(generateFinalReport(playerWins, computerWins));
+    removeEventListenerFromGameButtons();
+  }
+}
+
+function playRound(e) {
+  const playerSelection = e.target.classList.value.split(" ")[0];
+  const computerSelection = computerPlay();
+  game(whoWins(playerSelection, computerSelection));
+}
+
+function addEventListenerToGameButtons() {
+  const buttons = document.querySelectorAll(".buttons button");
+  for (const button of buttons) {
+    button.addEventListener("click", playRound);
+  }
+}
+
+function removeEventListenerFromGameButtons() {
+  const buttons = document.querySelectorAll(".buttons button");
+  for (const button of buttons) {
+    button.removeEventListener("click", playRound);
+  }
+}
+
+function addEventListenerToResetButtons() {
+  const resetButton = document.querySelector("button.resetButton");
+  resetButton.addEventListener("click", resetTheGame);
+}
+
+addEventListenerToGameButtons();
+addEventListenerToResetButtons();
