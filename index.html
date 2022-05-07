@@ -13,15 +13,37 @@
 <body>
 
   <div class="gameBoard">
-    <div class="buttons">
-      <button class="rock">Rock</button>
-      <button class="paper">Paper</button>
-      <button class="scissors">Scissors</button>
+
+    <div class="header">
+      <h1>Welcome to the <span>Rock Paper Scissors</span> game!</h1>
     </div>
+
+    <div class="scoreBoard">
+      <h1>Score Board</h1>
+      <div class="player">
+        <h3>You</h3> <span class="score">⚝⚝⚝⚝⚝</span>
+      </div>
+      <div class="computer">
+        <h3>Computer </h3><span class="score">⚝⚝⚝⚝⚝</span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="rock">Rock <span class="rock emoji">🪨</span></button>
+      <button class="paper">Paper <span class="paper emoji">📄</span></button>
+      <button class="scissors">Scissors <span class="scissors emoji">✂️</span></button>
+    </div>
+
     <div class="results">
       <h2>Result</h2>
-      <p class="result"></p>
+      <p class="result">Choose your weapon!</p>
+      <!-- To do: Show computer choice -->
     </div>
+
+    <div class="reset">
+      <button class="resetButton">Reset 🔄</button>
+    </div>
+
   </div>
 </body>
 
