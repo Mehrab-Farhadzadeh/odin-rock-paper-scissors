@@ -48,7 +48,7 @@ function resetTheGame() {
   computerWins = 0;
   resultsNode.classList.remove(gameResult);
   finalReportNode.classList.remove(gameResult);
-  addRoundReportToDOM("Choose your weapon!");
+  addRoundReportToDOM("Choose your weapon!", "Result");
   addEventListenerToGameButtons();
   changeStyleOfButton("");
 }
@@ -69,7 +69,7 @@ function addRoundReportToDOM(roundReport, resultEmoji = "") {
   const roundReportNode = document.querySelector("p.result");
   const resultsHeaderNode = document.querySelector(".results h2");
   roundReportNode.textContent = `${roundReport}`;
-  resultsHeaderNode.textContent = `${resultEmoji} Result ${resultEmoji}`;
+  resultsHeaderNode.textContent = `${resultEmoji}`;
   addScoresToDOM();
 }
 
