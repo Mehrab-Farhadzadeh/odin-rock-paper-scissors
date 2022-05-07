@@ -13,14 +13,11 @@ function whoWins(playerSelection, computerSelection) {
   let result;
   if (playerSelection === computerSelection) {
     result = `Tie!`;
-  }
-  if (playerSelection === "rock") {
+  } else if (playerSelection === "rock") {
     result = computerSelection === "paper" ? `You Lose!` : `You Win!`;
-  }
-  if (playerSelection === "paper") {
+  } else if (playerSelection === "paper") {
     result = computerSelection === "scissors" ? `You Lose!` : `You Win!`;
-  }
-  if (playerSelection === "scissors") {
+  } else if (playerSelection === "scissors") {
     result = computerSelection === "rock" ? `You Lose!` : `You Win!`;
   }
   result += ` Computer played ${getEmojiOfSelection(computerSelection)}`;
@@ -53,6 +50,7 @@ function resetTheGame() {
   finalReportNode.classList.remove(gameResult);
   addRoundReportToDOM("Choose your weapon!");
   addEventListenerToGameButtons();
+  changeStyleOfButton("");
 }
 
 let playerWins = 0;
@@ -91,7 +89,6 @@ function addFinalReportToDOM(finalReport) {
 }
 
 function game(roundReport) {
-  console.log(roundReport);
   let resultEmoji = "🤝";
   if (roundReport.search("Win") !== -1) {
     playerWins++;
@@ -101,12 +98,21 @@ function game(roundReport) {
     resultEmoji = "❌";
   }
   addRoundReportToDOM(roundReport, resultEmoji);
-  console.log(roundReport);
 
   if (playerWins >= 5 || computerWins >= 5) {
     addFinalReportToDOM(generateFinalReport(playerWins, computerWins));
-    console.log(generateFinalReport(playerWins, computerWins));
     removeEventListenerFromGameButtons();
+  }
+}
+
+function changeStyleOfButton(playerSelection) {
+  const buttons = document.querySelectorAll(".buttons button");
+  for (const button of buttons) {
+    if (button.classList.value === playerSelection) {
+      button.style.borderColor = "yellow";
+    } else {
+      button.style.borderColor = "#62b188";
+    }
   }
 }
 
@@ -114,6 +120,7 @@ function playRound(e) {
   const playerSelection = e.target.classList.value.split(" ")[0];
   const computerSelection = computerPlay();
   game(whoWins(playerSelection, computerSelection));
+  changeStyleOfButton(playerSelection);
 }
 
 function addEventListenerToGameButtons() {
