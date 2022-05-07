@@ -4,25 +4,27 @@ function computerPlay() {
   return options[randomChoice];
 }
 
+function getEmojiOfSelection(selection) {
+  if (selection === "rock") return "🪨";
+  if (selection === "paper") return "📄";
+  if (selection === "scissors") return "✂️";
+}
 function whoWins(playerSelection, computerSelection) {
+  let result;
   if (playerSelection === computerSelection) {
-    return `Tie, Both are "${playerSelection}".`;
+    result = `Tie!`;
   }
   if (playerSelection === "rock") {
-    return computerSelection === "paper"
-      ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
-      : `You Win! "${playerSelection}" beats "${computerSelection}".`;
+    result = computerSelection === "paper" ? `You Lose!` : `You Win!`;
   }
   if (playerSelection === "paper") {
-    return computerSelection === "scissors"
-      ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
-      : `You Win! "${playerSelection}" beats "${computerSelection}".`;
+    result = computerSelection === "scissors" ? `You Lose!` : `You Win!`;
   }
   if (playerSelection === "scissors") {
-    return computerSelection === "rock"
-      ? `You Lose! "${computerSelection}" beats "${playerSelection}".`
-      : `You Win! "${playerSelection}" beats "${computerSelection}".`;
+    result = computerSelection === "rock" ? `You Lose!` : `You Win!`;
   }
+  result += ` Computer played ${getEmojiOfSelection(computerSelection)}`;
+  return result;
 }
 
 function generateFinalReport(playerWins, computerWins) {
