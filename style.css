@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 body {
+  transform: scale(0.5);
   background-color: #333;
   margin: auto;
   height: 100vh;
