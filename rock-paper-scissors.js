@@ -35,35 +35,41 @@ function generateFinalReport(playerWins, computerWins) {
   return finalReport;
 }
 
-function resetTheGame() {
-  const finalReportNode = document.querySelector("p.result");
-  const resultsNode = document.querySelector(".results");
-  let gameResult;
-  if (playerWins > computerWins) {
-    gameResult = "winner";
-  } else {
-    gameResult = "loser";
-  }
-  playerWins = 0;
-  computerWins = 0;
-  resultsNode.classList.remove(gameResult);
-  finalReportNode.classList.remove(gameResult);
-  addRoundReportToDOM("Choose your weapon!", "Result");
-  addEventListenerToGameButtons();
-  changeStyleOfButton("");
-}
-
 let playerWins = 0;
 let computerWins = 0;
-const TOTALROUNDS = 5;
+const TOTAL_ROUNDS = 5;
+
+function getCurrentClassOfResultNode() {
+  let currentClass;
+  if (playerWins > computerWins) {
+    currentClass = "winner";
+  } else {
+    currentClass = "loser";
+  }
+  return currentClass;
+}
+function removeStyleClassFromResultNode() {
+  const finalReportNode = document.querySelector("p.result");
+  const resultsNode = document.querySelector(".results");
+  let currentClass = getCurrentClassOfResultNode();
+  resultsNode.classList.remove(currentClass);
+  finalReportNode.classList.remove(currentClass);
+}
+function addStyleClassToResultNode() {
+  const finalReportNode = document.querySelector("p.result");
+  const resultsNode = document.querySelector(".results");
+  let currentClass = getCurrentClassOfResultNode();
+  resultsNode.classList.add(currentClass);
+  finalReportNode.classList.add(currentClass);
+}
 
 function addScoresToDOM() {
   const playerScoreNode = document.querySelector(".player .score");
   const computerScoreNode = document.querySelector(".computer .score");
   playerScoreNode.textContent =
-    "⭐".repeat(playerWins) + "⚝".repeat(TOTALROUNDS - playerWins);
+    "⭐".repeat(playerWins) + "⚝".repeat(TOTAL_ROUNDS - playerWins);
   computerScoreNode.textContent =
-    "⭐".repeat(computerWins) + "⚝".repeat(TOTALROUNDS - computerWins);
+    "⭐".repeat(computerWins) + "⚝".repeat(TOTAL_ROUNDS - computerWins);
 }
 function addRoundReportToDOM(roundReport, resultEmoji = "") {
   const roundReportNode = document.querySelector("p.result");
@@ -72,22 +78,20 @@ function addRoundReportToDOM(roundReport, resultEmoji = "") {
   resultsHeaderNode.textContent = `${resultEmoji}`;
   addScoresToDOM();
 }
-
 function addFinalReportToDOM(finalReport) {
   const finalReportNode = document.querySelector("p.result");
   const resultsNode = document.querySelector(".results");
   finalReportNode.textContent = `${finalReport}`;
-  let gameResult;
-  if (playerWins > computerWins) {
-    gameResult = "winner";
-  } else {
-    gameResult = "loser";
-  }
-  resultsNode.classList.add(gameResult);
-  finalReportNode.classList.add(gameResult);
   resultsNode.appendChild(finalReportNode);
+  addStyleClassToResultNode();
 }
 
+function removeEventListenerFromGameButtons() {
+  const buttons = document.querySelectorAll(".buttons button");
+  for (const button of buttons) {
+    button.removeEventListener("click", playRound);
+  }
+}
 function game(roundReport) {
   let resultEmoji = "🤝";
   if (roundReport.search("Win") !== -1) {
@@ -99,12 +103,11 @@ function game(roundReport) {
   }
   addRoundReportToDOM(roundReport, resultEmoji);
 
-  if (playerWins >= 5 || computerWins >= 5) {
+  if (playerWins >= TOTAL_ROUNDS || computerWins >= TOTAL_ROUNDS) {
     addFinalReportToDOM(generateFinalReport(playerWins, computerWins));
     removeEventListenerFromGameButtons();
   }
 }
-
 function changeStyleOfButton(playerSelection) {
   const buttons = document.querySelectorAll(".buttons button");
   for (const button of buttons) {
@@ -115,14 +118,12 @@ function changeStyleOfButton(playerSelection) {
     }
   }
 }
-
 function playRound(e) {
   const playerSelection = e.target.classList.value.split(" ")[0];
   const computerSelection = computerPlay();
   game(whoWins(playerSelection, computerSelection));
   changeStyleOfButton(playerSelection);
 }
-
 function addEventListenerToGameButtons() {
   const buttons = document.querySelectorAll(".buttons button");
   for (const button of buttons) {
@@ -130,13 +131,17 @@ function addEventListenerToGameButtons() {
   }
 }
 
-function removeEventListenerFromGameButtons() {
-  const buttons = document.querySelectorAll(".buttons button");
-  for (const button of buttons) {
-    button.removeEventListener("click", playRound);
-  }
+function resetTheScores() {
+  playerWins = 0;
+  computerWins = 0;
 }
-
+function resetTheGame() {
+  removeStyleClassFromResultNode();
+  resetTheScores();
+  changeStyleOfButton("");
+  addRoundReportToDOM("Choose your weapon!", "Result");
+  addEventListenerToGameButtons();
+}
 function addEventListenerToResetButtons() {
   const resetButton = document.querySelector("button.resetButton");
   resetButton.addEventListener("click", resetTheGame);
